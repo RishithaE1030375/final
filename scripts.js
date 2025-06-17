@@ -103,7 +103,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   function drawPieChart(taxiid, data) {
     const pieSvg = d3.select("#pieChart").html("").append("svg")
       .attr("width", 300)
-      .attr("height", 300);
+      .attr("height", 350);
 
     const trips = data.filter(d => d.properties.taxiid === taxiid);
     const pieData = trips.map(d => ({
