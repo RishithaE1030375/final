@@ -6,10 +6,24 @@ window.addEventListener("DOMContentLoaded", async () => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+  const carIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61112.png',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
+
+  const pinIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+    iconSize: [24, 24],
+    iconAnchor: [12, 24]
+  });
+
   const response = await fetch("trips.json");
   const tripData = await response.json();
 
-  L.geoJSON(tripData).addTo(map);
+  let geoJsonLayer = L.geoJSON(tripData, {
+    style: { color: "blue", weight: 1 }
+  }).addTo(map);
 
   const taxiCounts = d3.rollups(tripData.features, v => v.length, d => d.properties.taxiid);
 
@@ -36,7 +50,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     .attr("width", x.bandwidth())
     .attr("height", d => height - 30 - y(d[1]))
     .attr("fill", "steelblue")
-    .on("click", (event, d) => drawPieChart(d[0], tripData.features));
+    .on("click", (event, d) => {
+      svg.selectAll(".bar").attr("fill", "steelblue");
+      d3.select(event.currentTarget).attr("fill", "orange");
+      updateMapForTaxi(d[0]);
+      drawPieChart(d[0], tripData.features);
+    });
 
   svg.append("g")
     .attr("transform", `translate(0,${height - 30})`)
@@ -49,21 +68,38 @@ window.addEventListener("DOMContentLoaded", async () => {
     .attr("transform", "translate(60,0)")
     .call(d3.axisLeft(y));
 
+  let highlightLayer, markerGroup;
+
+  function updateMapForTaxi(taxiid) {
+    if (geoJsonLayer) map.removeLayer(geoJsonLayer);
+    if (highlightLayer) map.removeLayer(highlightLayer);
+    if (markerGroup) map.removeLayer(markerGroup);
+
+    const filtered = {
+      type: "FeatureCollection",
+      features: tripData.features.filter(f => f.properties.taxiid === taxiid)
+    };
+    geoJsonLayer = L.geoJSON(filtered, {
+      style: { color: "blue", weight: 1.5 }
+    }).addTo(map);
+  }
+
   function drawPieChart(taxiid, data) {
     const pieSvg = d3.select("#pieChart").html("").append("svg")
-      .attr("width", 400)
-      .attr("height", 400);
+      .attr("width", 300)
+      .attr("height", 300);
 
     const trips = data.filter(d => d.properties.taxiid === taxiid);
     const pieData = trips.map(d => ({
       label: `Trip ID: ${d.properties.tripid}`,
-      value: d.properties.duration || 1
+      value: d.properties.duration || 1,
+      coords: d.geometry.coordinates
     }));
 
-    const radius = 200;
+    const radius = 120;
     const pie = d3.pie().value(d => d.value);
-    const arc = d3.arc().innerRadius(0).outerRadius(radius - 20);
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
+    const color = d3.scaleOrdinal(d3.schemeTableau10);
 
     const g = pieSvg.append("g")
       .attr("transform", `translate(${radius},${radius})`);
@@ -76,14 +112,32 @@ window.addEventListener("DOMContentLoaded", async () => {
     arcs.append("path")
       .attr("d", arc)
       .attr("fill", (d, i) => color(i))
+      .on("click", (event, d) => {
+        if (highlightLayer) map.removeLayer(highlightLayer);
+        if (markerGroup) map.removeLayer(markerGroup);
+
+        highlightLayer = L.geoJSON({
+          type: "LineString",
+          coordinates: d.data.coords
+        }, {
+          style: { color: "red", weight: 3 }
+        }).addTo(map);
+
+        const start = d.data.coords[0];
+        const end = d.data.coords[d.data.coords.length - 1];
+        markerGroup = L.layerGroup([
+          L.marker([start[1], start[0]], { icon: carIcon }),
+          L.marker([end[1], end[0]], { icon: pinIcon })
+        ]).addTo(map);
+      })
       .append("title")
-      .text(d => `${d.data.label}\nDuration: ${d.data.value}s`);
+      .text(d => `${d.data.label}\\nDuration: ${d.data.value}s`);
 
     pieSvg.append("text")
-      .attr("x", 200)
+      .attr("x", radius)
       .attr("y", 20)
       .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text(`Trip Details By Taxi ID: ${taxiid}`);
+      .style("font-size", "14px")
+      .text(`Taxi ID: ${taxiid}`);
   }
 });
