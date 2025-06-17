@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,9 +11,49 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"></script>
+  <style>
+    #pieChart {
+      padding-top: 40px;
+    }
+    .description {
+      padding: 10px;
+      background-color: #f4f4f4;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .student-info {
+      font-size: 14px;
+      color: #444;
+      text-align: right;
+    }
+    .highlight-arc {
+      stroke: black;
+      stroke-width: 2px;
+    }
+  </style>
 </head>
 <body>
-  <header><h1>Data Visualization of Trips.json</h1></header>
+  <header>
+    <div class="header-container">
+      <h1>Data Visualization of Taxi Trips</h1>
+      <div class="student-info">
+        <p><strong>Student Name:</strong> Rishitha Erupaka </p>
+        <p><strong>ID:</strong> 1030375</p>
+      </div>
+    </div>
+  </header>
+  <div class="description">
+    <p>
+      Use the bar chart below to explore trip data by Taxi ID. When a bar is clicked, the map updates to show only the routes taken by that taxi.
+      Additionally, a pie chart appears beside the map showing the durations of individual trips. Clicking a pie slice highlights the trip path in red on the map, with start and end marked by a car icon and a pin respectively.
+    </p>
+  </div>
   <div class="vizContainer">
     <div class="mainMap">
       <div id="map"></div>
@@ -23,5 +64,8 @@
     </div>
   </div>
   <script src="scripts.js"></script>
+  <footer class="py-5 bg-dark">
+        <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Rishitha Erupaka</p></div>
+  </footer>
 </body>
 </html>
