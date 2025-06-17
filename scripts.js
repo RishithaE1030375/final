@@ -5,29 +5,32 @@ window.addEventListener("DOMContentLoaded", async () => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  const response = await fetch("js/trips.json");
+  // Load trips data
+  const response = await fetch("trips.json");
   const tripData = await response.json();
 
   L.geoJSON(tripData).addTo(map);
 
-  const tripsByTaxi = d3.rollups(tripData.features, v => v.length, d => d.properties.taxiid);
+  // Aggregate trips by taxiid
+  const taxiCounts = d3.rollups(tripData.features, v => v.length, d => d.properties.taxiid);
 
-  const width = 1200, height = 300;
+  // BAR CHART
+  const width = 1000, height = 300;
   const svg = d3.select("#svgContainer").append("svg")
     .attr("width", width)
     .attr("height", height);
 
   const x = d3.scaleBand()
-    .domain(tripsByTaxi.map(d => d[0]))
-    .range([50, width - 10])
+    .domain(taxiCounts.map(d => d[0]))
+    .range([60, width - 10])
     .padding(0.1);
 
   const y = d3.scaleLinear()
-    .domain([0, d3.max(tripsByTaxi, d => d[1])])
+    .domain([0, d3.max(taxiCounts, d => d[1])])
     .range([height - 30, 10]);
 
   svg.selectAll(".bar")
-    .data(tripsByTaxi)
+    .data(taxiCounts)
     .join("rect")
     .attr("class", "bar")
     .attr("x", d => x(d[0]))
@@ -39,15 +42,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   svg.append("g")
     .attr("transform", `translate(0,${height - 30})`)
-    .call(d3.axisBottom(x).tickValues(x.domain().filter((d, i) => i % 20 === 0)))
+    .call(d3.axisBottom(x).tickValues(x.domain().filter((_, i) => i % 15 === 0)))
     .selectAll("text")
     .attr("transform", "rotate(45)")
     .style("text-anchor", "start");
 
   svg.append("g")
-    .attr("transform", "translate(50,0)")
+    .attr("transform", "translate(60,0)")
     .call(d3.axisLeft(y));
 
+  // PIE CHART
   function drawPieChart(taxiid, data) {
     const pieSvg = d3.select("#pieChart").html("").append("svg")
       .attr("width", 400)
