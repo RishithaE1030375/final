@@ -51,6 +51,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     .attr("height", d => height - 30 - y(d[1]))
     .attr("fill", "steelblue")
     .on("click", (event, d) => {
+        d3.selectAll(".arc path").classed("highlight-arc", false);
+        d3.select(event.currentTarget).classed("highlight-arc", true);
+
       svg.selectAll(".bar").attr("fill", "steelblue");
       d3.select(event.currentTarget).attr("fill", "orange");
       updateMapForTaxi(d[0]);
@@ -113,6 +116,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       .attr("d", arc)
       .attr("fill", (d, i) => color(i))
       .on("click", (event, d) => {
+        d3.selectAll(".arc path").classed("highlight-arc", false);
+        d3.select(event.currentTarget).classed("highlight-arc", true);
+
         if (highlightLayer) map.removeLayer(highlightLayer);
         if (markerGroup) map.removeLayer(markerGroup);
 
@@ -131,7 +137,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         ]).addTo(map);
       })
       .append("title")
-      .text(d => `${d.data.label}\\nDuration: ${d.data.value}s`);
+      .text(d => `${d.data.label}\nDuration: ${d.data.value}s`);
 
     pieSvg.append("text")
       .attr("x", radius)
