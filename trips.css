@@ -1,28 +1,23 @@
 #map {
-    height: 90vh; 
-    display: inline-block;
-	width: 70%
+  height: 90vh; 
+  display: inline-block;
+  width: 70%;
 }
-
 #pieChart {
-	display : inline-flex;
+  display: inline-block;
+  vertical-align: top;
 }
-
-.vizContainer{
-    display: block;
-    height: 150vh;
+.vizContainer {
+  display: block;
+  height: 150vh;
 }
- 
-
 .mainMap {
-    position: relative;
+  position: relative;
 }
-
 .mainBar {
-	height: 60vh;
-    position: absolute;   
+  height: 60vh;
+  position: absolute;
 }
-
 .pieTooltip {
   background: #eee;
   box-shadow: 0 0 5px #999999;
