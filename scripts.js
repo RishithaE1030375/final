@@ -94,7 +94,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const trips = data.filter(d => d.properties.taxiid === taxiid);
     const pieData = trips.map(d => ({
-      label: `Trip ID: ${d.properties.tripid}`,
+      label: `Trip information by Taxi ID: ${d.properties.tripid}`,
       value: d.properties.duration || 1,
       coords: d.geometry.coordinates
     }));
