@@ -51,9 +51,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     .attr("height", d => height - 30 - y(d[1]))
     .attr("fill", "steelblue")
     .on("click", (event, d) => {
-        d3.selectAll(".arc path").classed("highlight-arc", false);
-        d3.select(event.currentTarget).classed("highlight-arc", true);
-
       svg.selectAll(".bar").attr("fill", "steelblue");
       d3.select(event.currentTarget).attr("fill", "orange");
       updateMapForTaxi(d[0]);
@@ -70,6 +67,22 @@ window.addEventListener("DOMContentLoaded", async () => {
   svg.append("g")
     .attr("transform", "translate(60,0)")
     .call(d3.axisLeft(y));
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 15)
+    .attr("x", -height / 2)
+    .attr("dy", "-3.5em")
+    .style("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Trips Count");
+
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height)
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .text("Taxi ID");
 
   let highlightLayer, markerGroup;
 
@@ -118,7 +131,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       .on("click", (event, d) => {
         d3.selectAll(".arc path").classed("highlight-arc", false);
         d3.select(event.currentTarget).classed("highlight-arc", true);
-
         if (highlightLayer) map.removeLayer(highlightLayer);
         if (markerGroup) map.removeLayer(markerGroup);
 
