@@ -7,10 +7,10 @@ window.addEventListener("DOMContentLoaded", async () => {
   }).addTo(map);
 
   const carIcon = L.icon({
-    iconUrl: 'taxi.png',
-    iconSize: [24, 24],
-    iconAnchor: [12, 12]
-  });
+  iconUrl: 'taxi.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
+});
 
   const pinIcon = L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
