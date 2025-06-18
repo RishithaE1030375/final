@@ -8,8 +8,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const carIcon = L.icon({
   iconUrl: 'car.png',
-  iconSize: [24, 24],
-  iconAnchor: [12, 24]
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
 });
 
   const pinIcon = L.icon({
