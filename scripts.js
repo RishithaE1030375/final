@@ -107,7 +107,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const trips = data.filter(d => d.properties.taxiid === taxiid);
     const pieData = trips.map(d => ({
-      label: `Trip information by Taxi ID: ${d.properties.tripid}`,
+      label: `Trips by Taxi ID: ${d.properties.tripid}`,
       value: d.properties.duration || 1,
       coords: d.geometry.coordinates
     }));
@@ -156,6 +156,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       .attr("y", 20)
       .attr("text-anchor", "middle")
       .style("font-size", "14px")
-      .text(`Trip details by Taxi ID: ${taxiid}`);
+      .text(`Trip Information by Taxi ID: ${taxiid}`);
   }
 });
