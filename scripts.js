@@ -156,6 +156,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       .attr("y", 20)
       .attr("text-anchor", "middle")
       .style("font-size", "14px")
-      .text(`Trip information by Taxi ID: ${taxiid}`);
+      .text(`Trip details by Taxi ID: ${taxiid}`);
   }
 });
