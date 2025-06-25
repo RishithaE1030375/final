@@ -50,10 +50,42 @@
   </header>
   <div class="description">
     <p>
-      Use the bar chart below to explore trip data by Taxi ID. When a bar is clicked, the map updates to show only the routes taken by that taxi.
-      Additionally, a pie chart appears beside the map showing the durations of individual trips. Clicking a pie slice highlights the trip path in red on the map.
+      Welcome to the interactive trip data visualization dashboard! 
+      This page helps you analyze and explore taxi movement patterns in a dynamic and intuitive way, similar to how modern logistics or fleet management platforms operate.
     </p>
   </div>
+  <h2>🧭 How to Explore the Trip Data Visualization</h2>
+
+<details open>
+  <summary>📊 Bar Chart - Taxi Activity Overview</summary>
+  <p>The bar chart displays Taxi IDs on the X-axis and the number of trips on the Y-axis. Clicking on any bar will:</p>
+  <ul>
+    <li>Highlight the selected taxi ID in orange.</li>
+    <li>Filter the map to show only the routes taken by that taxi.</li>
+    <li>Display a pie chart summarizing trip durations for that taxi.</li>
+  </ul>
+</details>
+
+<details>
+  <summary>🗺️ Interactive Map - Trip Route Visualizer</summary>
+  <p>The interactive map dynamically shows trip routes on a real-world map. When a taxi is selected:</p>
+  <ul>
+    <li>Routes are drawn on the map for the selected taxi.</li>
+    <li>Trip start is marked with a <strong>car icon</strong>, and the endpoint with a <strong>map pin</strong>.</li>
+    <li>The map updates automatically based on bar or pie chart interaction.</li>
+  </ul>
+</details>
+
+<details>
+  <summary>🥧 Pie Chart - Trip Duration Breakdown</summary>
+  <p>Beside the map, the pie chart displays individual trip durations for the selected taxi:</p>
+  <ul>
+    <li>Each slice represents a trip and shows its duration.</li>
+    <li>Clicking a slice highlights the associated route in red on the map.</li>
+    <li>This allows deeper exploration of individual journeys.</li>
+  </ul>
+</details>
+
   <div class="vizContainer">
     <div class="mainMap">
       <div id="map"></div>
