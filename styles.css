@@ -4,6 +4,6 @@ body { margin: 0; font-family: Arial, sans-serif; background: #fff; } header { b
   margin-left: 20px;
 }
 #text {
-  height: 10px;
+  padding-top: 10px;
   margin-left: 8px;
 }
